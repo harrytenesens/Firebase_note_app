@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "44280765663",
+    "firebase_url": "https://lyrical-drive-239613.firebaseio.com",
+    "project_id": "lyrical-drive-239613",
+    "storage_bucket": "lyrical-drive-239613.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:44280765663:android:1bc9ab0ac4e56f92061d6a",
+        "android_client_info": {
+          "package_name": "com.example.firebase_note_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "44280765663-d9bt91gblh85fa095sbg0ei9qqi0253k.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB7SQj-FD4mIcRZTl-f27NG_f3h3B4T5aI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "44280765663-d9bt91gblh85fa095sbg0ei9qqi0253k.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
