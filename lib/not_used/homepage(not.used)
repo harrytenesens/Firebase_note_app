@@ -1,0 +1,92 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_note_app/services/firestore.dart';
+import 'package:flutter/material.dart';
+
+class Homepage extends StatefulWidget {
+  const Homepage({super.key});
+
+  @override
+  State<Homepage> createState() => _HomepageState();
+}
+
+class _HomepageState extends State<Homepage> {
+  //firebase class access 
+  final FirestoreService fireService = FirestoreService();
+  //controller
+  final controller = TextEditingController();
+
+  void openNoteBox({String? docID}) {
+    showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+              content: TextField(
+                controller: controller,
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    if (docID == null) {
+                      fireService.addnote(controller.text);
+                    } 
+                    else {
+                      fireService.updateNote(docID, controller.text);
+                    }
+                    controller.clear();
+                    Navigator.of(context).pop();
+                  },
+                  child: Text('add'),
+                ),
+              ],
+            ));
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text('Notes')),
+      floatingActionButton: FloatingActionButton(
+        onPressed: openNoteBox,
+        child: Icon(Icons.add),
+      ),
+      body: StreamBuilder(stream: fireService.getnoteScteam(), builder: (context, snapshot) {
+        // if we have data get all the docs
+        if(snapshot.hasData){
+          List noteList = snapshot.data.docs;
+
+          //display as a list
+          return ListView.builder(itemCount: noteList.length, itemBuilder: (context, index){
+            // get each individual docs
+            DocumentSnapshot document = noteList[index];
+            String docID = document.id;
+
+            // get note from each doc
+            Map data = document.data() as Map;
+            String noteText = data['note'];
+            String noteTime = data['timestamp'].toString();
+
+            //display it as a list tile
+            return ListTile(
+              title: Text(noteText),
+              subtitle: Text(noteTime),
+              trailing: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  IconButton(onPressed: (){
+                    openNoteBox(docID: docID);
+                  }, icon: Icon(Icons.edit)),
+                  // delete button
+                  IconButton(onPressed: (){
+                    fireService.deleteNote(docID);
+                  }, icon: Icon(Icons.delete),),
+                ],
+              ),
+            );
+          });
+        } else {
+          // if there's no notes
+          return Text('No notes');
+        }
+      }),
+    );
+  }
+}
